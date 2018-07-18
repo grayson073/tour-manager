@@ -13,7 +13,7 @@ the API needs to be able to add, update and remove stops.
 
 ## Basic CRUD
 
-The `/tours` API should offer standard CRUD for `GET`, `GET` by id, `POST`, `PUT` by id and `DELETE` by id.
+The `/tours` API should offer CRUD for `GET`, `GET` by id, and `POST`
 
 The schema structure of a tours looks like:
 
