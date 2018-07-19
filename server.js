@@ -4,7 +4,7 @@ const connect = require('./lib/util/connect');
 const { createServer } = require('http');
 const app = require('./lib/app');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/tours';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/circus';
 connect(MONGODB_URI);
 
 const PORT = process.env.PORT || 3000;

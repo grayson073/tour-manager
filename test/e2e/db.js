@@ -1,5 +1,5 @@
 const connect = require('../../lib/util/connect');
-connect('mongodb://localhost27017/tours');
+connect('mongodb://localhost:27017/circus');
 const mongoose = require('mongoose');
 
 after(() => {
