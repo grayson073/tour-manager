@@ -121,4 +121,34 @@ describe('Tours API', () => {
             });
     });
 
+    it('DELETES a stop from a tour (by tour id)', () => {
+        const beaverton = {
+            location: {
+                city: 'Beaverton',
+                state: 'Oregon',
+                zip: 97005
+            },
+            weather: {
+                temperature: 100,
+                sunset: '8:12pm'
+            },
+            attendance: 75
+        };
+
+        return addStop(clowns, beaverton)
+            .then(stop => {
+                console.log('Stop', stop);
+                return request
+                    .delete(`/api/tours/${clowns._id}/stops/${stop._id}`);
+            })
+            .then(checkOk)
+            .then(() => {
+                return request.get(`/api/tours/${clowns._id}`);
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.tours.length, 0);
+            });
+    });
+
 });
