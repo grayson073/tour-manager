@@ -37,6 +37,24 @@ describe('Tours API', () => {
         }]
     };
 
+    let animals = {
+        title: 'Exotic Animals',
+        activities: ['Elephant dance', 'Lions, tigers, and bears, oh my!'],
+        launchDate: new Date(),
+        stops: [{
+            location: {
+                city: 'Portland',
+                state: 'Oregon',
+                zip: 97209
+            },
+            weather: {
+                temperature: 78,
+                sunset: '8:13pm'
+            },
+            attendance: 200
+        }]
+    };
+
     beforeEach(() => {
         return save(clowns)
             .then(data => {
@@ -44,8 +62,25 @@ describe('Tours API', () => {
             });
     });
 
+    beforeEach(() => {
+        return save(animals)
+            .then(data => {
+                animals = data;
+            });
+    });
+
     it('Saves a tour', () => {
         assert.isOk(clowns._id);
+    });
+
+
+    it('Gets a list of tours', () => {
+        return request
+            .get('/api/tours')
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body, [clowns, animals]);
+            });
     });
 
 });
