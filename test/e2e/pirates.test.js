@@ -74,12 +74,21 @@ describe('Tours API', () => {
     });
 
 
-    it('Gets a list of tours', () => {
+    it('GETS a list of tours', () => {
         return request
             .get('/api/tours')
             .then(checkOk)
             .then(({ body }) => {
                 assert.deepEqual(body, [clowns, animals]);
+            });
+    });
+
+    it('GETS a tour by id', () => {
+        return request
+            .get(`/api/tours/${animals._id}`)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body, animals);
             });
     });
 
