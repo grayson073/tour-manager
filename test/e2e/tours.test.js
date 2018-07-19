@@ -150,4 +150,10 @@ describe('Tours API', () => {
             });
     });
 
+    // it('Updates a stop with number of attendees', () => {
+    //     console.log('CONSOLE LOG', clowns.stops[0].attendance);
+
+    //     assert.deepEqual(body, clowns);
+    // });
+
 });
