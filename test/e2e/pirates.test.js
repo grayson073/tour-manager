@@ -137,7 +137,6 @@ describe('Tours API', () => {
 
         return addStop(clowns, beaverton)
             .then(stop => {
-                console.log('Stop', stop);
                 return request
                     .delete(`/api/tours/${clowns._id}/stops/${stop._id}`);
             })
@@ -147,7 +146,7 @@ describe('Tours API', () => {
             })
             .then(checkOk)
             .then(({ body }) => {
-                assert.equal(body.tours.length, 0);
+                assert.equal(body.stops.length, 1);
             });
     });
 
