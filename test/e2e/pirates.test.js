@@ -69,7 +69,7 @@ describe('Tours API', () => {
             });
     });
 
-    it('Saves a tour', () => {
+    it('POSTS a tour', () => {
         assert.isOk(clowns._id);
     });
 
@@ -89,6 +89,35 @@ describe('Tours API', () => {
             .then(checkOk)
             .then(({ body }) => {
                 assert.deepEqual(body, animals);
+            });
+    });
+
+    function addStop(tour, stop) {
+        return request
+            .post(`/api/tours/${tour._id}/stops`)
+            .send(stop)
+            .then(checkOk)
+            .then(({ body }) => body);
+    }
+
+    it('POSTS a stop for tour (by tour id)', () => {
+        const beaverton = {
+            location: {
+                city: 'Beaverton',
+                state: 'Oregon',
+                zip: 97005
+            },
+            weather: {
+                temperature: 100,
+                sunset: '8:12pm'
+            },
+            attendance: 75
+        };
+
+        return addStop(clowns, beaverton)
+            .then(stop => {
+                assert.isDefined(stop._id);
+                assert.equal(stop['location.city'], beaverton['location.city']);
             });
     });
 
