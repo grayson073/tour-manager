@@ -9,7 +9,7 @@ describe('Tour model', () => {
             title: 'Circus Clowns',
             activities: ['It scares you', 'Bobo the clown juggles'],
             launchDate: new Date(),
-            stops: {
+            stops: [{
                 location: {
                     city: 'Tualatin',
                     state: 'Oregon',
@@ -20,26 +20,35 @@ describe('Tour model', () => {
                     sunset: '8:14pm'
                 },
                 attendance: 52
-            }
+            }]
         };
 
         const tour = new Tour(data);
+
         const json = tour.toJSON();
         delete json._id;
+        json.stops.forEach(stop => delete stop._id);
         assert.deepEqual(json, data);
 
     });
 
+    it('Requires a title for the tour', () => {
+        const tour = new Tour({});
+
+        const errors = getErrors(tour.validateSync(), 1);
+        assert.equal(errors.title.kind, 'required');
+    });
+
     it('Requires an attendance of at least 1', () => {
         const tour = new Tour({
-            stops: {
+            title: 'Circus Tour',
+            stops: [{
                 attendance: 0
-            }
+            }]
         });
 
         const errors = getErrors(tour.validateSync(), 1);
-        assert.equal(Object.keys(errors).length, 1);
-        assert.equal(errors['stops.attendance'].kind, 'min');
+        assert.equal(errors['stops.0.attendance'].kind, 'min');
     });
 
 });
