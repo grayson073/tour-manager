@@ -1,3 +1,4 @@
+require('dotenv').config();
 const connect = require('../../lib/util/connect');
 connect('mongodb://localhost:27017/circus');
 const mongoose = require('mongoose');

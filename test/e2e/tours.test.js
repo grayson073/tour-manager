@@ -150,10 +150,15 @@ describe('Tours API', () => {
             });
     });
 
-    // it('Updates a stop with number of attendees', () => {
-    //     console.log('CONSOLE LOG', clowns.stops[0].attendance);
-
-    //     assert.deepEqual(body, clowns);
-    // });
+    it('Updates a stop with number of attendees', () => {
+        const data = { attendance: 250 };
+        return request
+            .put(`/api/tours/${clowns._id}/stops/${clowns.stops[0]._id}/attendance`)
+            .send(data)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.stops[0].attendance, 250);
+            });
+    });
 
 });
