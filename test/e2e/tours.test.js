@@ -1,6 +1,7 @@
 const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
+const getLocationWeather = require('../../lib/services/weather-service');
 
 const checkOk = res => {
     assert.equal(res.status, 200, 'Expected 200 http status code');
@@ -25,9 +26,9 @@ describe('Tours API', () => {
         launchDate: new Date(),
         stops: [{
             location: {
-                city: 'Tualatin',
+                city: 'Salem',
                 state: 'Oregon',
-                zip: 97062
+                zip: '55555'
             },
             weather: {
                 temperature: 85,
@@ -45,7 +46,7 @@ describe('Tours API', () => {
             location: {
                 city: 'Portland',
                 state: 'Oregon',
-                zip: 97209
+                zip: '97209'
             },
             weather: {
                 temperature: 78,
@@ -92,61 +93,35 @@ describe('Tours API', () => {
             });
     });
 
-    function addStop(tour, stop) {
-        return request
-            .post(`/api/tours/${tour._id}/stops`)
-            .send(stop)
-            .then(checkOk)
-            .then(({ body }) => body);
-    }
+    it('should GET location/weather data', () => {
+        return getLocationWeather('97062')
+            .then(data => {
+                assert.isDefined(data);
+            });
+    });
 
-    it('POSTS a stop for tour (by tour id)', () => {
-        const beaverton = {
-            location: {
-                city: 'Beaverton',
-                state: 'Oregon',
-                zip: 97005
-            },
-            weather: {
-                temperature: 100,
-                sunset: '8:12pm'
-            },
-            attendance: 75
+    it('POSTs a stop to a tour with API zip', () => {
+        const data = { zip: '97062' };
+        const location = {
+            city: 'Tualatin',
+            state: 'OR',
+            zip: '97062'
         };
-
-        return addStop(clowns, beaverton)
-            .then(stop => {
-                assert.isDefined(stop._id);
-                assert.equal(stop['location.city'], beaverton['location.city']);
+        return request
+            .post(`/api/tours/${clowns._id}/stops`)
+            .send(data)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body.location, location);
             });
     });
 
     it('DELETES a stop from a tour (by tour id)', () => {
-        const beaverton = {
-            location: {
-                city: 'Beaverton',
-                state: 'Oregon',
-                zip: 97005
-            },
-            weather: {
-                temperature: 100,
-                sunset: '8:12pm'
-            },
-            attendance: 75
-        };
-
-        return addStop(clowns, beaverton)
-            .then(stop => {
-                return request
-                    .delete(`/api/tours/${clowns._id}/stops/${stop._id}`);
-            })
-            .then(checkOk)
-            .then(() => {
-                return request.get(`/api/tours/${clowns._id}`);
-            })
+        return request
+            .del(`/api/tours/${clowns._id}/stops/${clowns.stops[0]._id}`)
             .then(checkOk)
             .then(({ body }) => {
-                assert.equal(body.stops.length, 1);
+                assert.isTrue(body.removed);
             });
     });
 
