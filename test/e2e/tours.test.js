@@ -93,7 +93,7 @@ describe('Tours API', () => {
             });
     });
 
-    it('should GET location/weather data', () => {
+    it.skip('should GET location/weather data', () => {
         return getLocationWeather('97062')
             .then(data => {
                 assert.isDefined(data);
