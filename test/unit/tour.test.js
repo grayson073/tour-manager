@@ -13,7 +13,7 @@ describe('Tour model', () => {
                 location: {
                     city: 'Tualatin',
                     state: 'Oregon',
-                    zip: 97062
+                    zip: '97062'
                 },
                 weather: {
                     temperature: 85,
